@@ -14,7 +14,9 @@ url = "https://www.visir.is"
 txtprinter = webSiteTxt(url)
 articleList = []
 IncludeExtractBool = True
-articleList = txtprinter.buildArtListVisir(IncludeExtractBool)
+IncludeImageBool = True
+articleList = txtprinter.buildArtListVisir(
+    IncludeExtractBool, IncludeImageBool)
 
 ArticleResultJSON = open("ArticleResult.json", "w+")
 ArticleResultJSON.write('[')
