@@ -7,15 +7,6 @@ from errors import *
 from dataobjects import *
 from logextension import *
 
-""" logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(levelname)s:%(name)s:%(message)s')
-
-file_handler = logging.FileHandler(
-    'crawlertxtobj.log', mode='w', encoding='windows-1252')
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler) """
-
 logger = UserdefinedLogging(__name__, 'crawlertxtobj.log', True)
 
 
@@ -27,13 +18,13 @@ class webSiteTxt:
 
     def __init__(self, url):
         self.url = url
-        self.SiteContent = self.getSiteHtml(url)
+        self.SiteContent = self._getSiteHtml(url)
 
-    def getArticleExtract(self, includeExtractBool, includeImageBool, htmlurl):
+    def _getArticleExtract(self, includeExtractBool, includeImageBool, htmlurl):
 
         # Get the article extract
         soup = None
-        soup = self.getSiteHtml(htmlurl)
+        soup = self._getSiteHtml(htmlurl)
         ExtractString = None
         ImageString = None
         if includeExtractBool:
@@ -53,11 +44,12 @@ class webSiteTxt:
 
         return ExtractString, ImageString
 
-    def getSiteHtml(self, htmlurl):
+    def _getSiteHtml(self, htmlurl):
         '''
         @htmlobjet: Object in which the retrieved html content is loaded
         '''
         htmlobjet = None
+        webxTxtObj = None
         try:
             # print("Retrieving news from {}".format(htmlurl))
             webxTxtObj = requests.get(htmlurl)
@@ -105,7 +97,7 @@ class webSiteTxt:
                         htmlurl = self.url + article.h1.a['href']
                         completeATag = (str(article.h1.a).replace(
                             'href="', 'target="_blank" href="{}'.format(self.url)))  # .replace('"', '')
-                        DataTuple = self.getArticleExtract(
+                        DataTuple = self._getArticleExtract(
                             includeExtractBool, includeImageBool, htmlurl)
                         if DataTuple[0] != None:
                             ExtractLink = DataTuple[0]
@@ -129,7 +121,7 @@ class webSiteTxt:
                         datevalue = str(article.h1.a['href'])
                         datevalue = datevalue[3:14]
                         htmlurl = self.url + article.h1.a['href']
-                        DataTuple = self.getArticleExtract(
+                        DataTuple = self._getArticleExtract(
                             includeExtractBool, includeImageBool, htmlurl)
                         if DataTuple[0] != None:
                             ExtractLink = DataTuple[0]

@@ -1,7 +1,8 @@
 import json.encoder
 from logextension import *
 from crawlertxtobj import *
-
+from configsettings import *
+#from configtwo import *
 
 try:
     logger = UserdefinedLogging(__name__, 'main.log', False)
@@ -9,8 +10,10 @@ except TypeError as err:
     print(err)
     pass
 
-
-url = "https://www.visir.is"
+settingsfile = configSettings("settings.json").configjson
+urldict = dict(settingsfile["url"])
+#url = "https://www.visir.is"
+url = urldict["Visir"]
 txtprinter = webSiteTxt(url)
 articleList = []
 IncludeExtractBool = True

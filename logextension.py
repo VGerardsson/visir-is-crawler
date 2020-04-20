@@ -37,7 +37,14 @@ class UserdefinedLogging():
 
     def debug(self, msg):
         '''
-        @msg: The message that will be written to the log
+        @msg: The debug message that will be written to the log
         '''
         if self.logging_active == True:
             self.logger.debug(msg)
+
+    def error(self, msg):
+        '''
+        @msg: The error message that will be written to the log
+        '''
+        if self.logging_active == True:
+            self.logger.error(msg)
