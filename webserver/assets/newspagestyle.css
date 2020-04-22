@@ -1,0 +1,30 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  text-align: center;
+  font-family: "FontAwesome";
+  font-size: 2vw;
+}
+.imageheight {
+  height: 25vh;
+  width: 35vw;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1vh;
+}
+.row {
+  display: flex;
+}
+
+/* Create two equal columns that sit next to each other */
+.column {
+  padding: 1vh;
+  width: 100vh;
+  text-align: left;
+}

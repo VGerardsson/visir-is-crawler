@@ -2,6 +2,8 @@
 from bs4 import BeautifulSoup
 import requests
 import logging
+import datetime
+import re
 # Local file imports
 from errors import *
 from dataobjects import *
@@ -19,30 +21,6 @@ class webSiteTxt:
     def __init__(self, url):
         self.url = url
         self.SiteContent = self._getSiteHtml(url)
-
-    def _getArticleExtract(self, includeExtractBool, includeImageBool, htmlurl):
-
-        # Get the article extract
-        soup = None
-        soup = self._getSiteHtml(htmlurl)
-        ExtractString = None
-        ImageString = None
-        if includeExtractBool:
-            ParagraphNumber = 1
-            for ArticleBody in soup.find_all('div', {"itemprop": "articleBody"}):
-                ExtractString = str(str(ArticleBody.p.contents).replace(
-                    '[', '')).replace(']', '')
-                ExtractString = ExtractString.replace("'", "")
-                if ParagraphNumber == 1:
-                    break
-
-        if includeImageBool:
-            for ArticleBody in soup.find_all('figure', {"class": "figure article-single__figure"}):
-                ImageString = str(ArticleBody.img)
-                if ParagraphNumber == 1:
-                    break
-
-        return ExtractString, ImageString
 
     def _getSiteHtml(self, htmlurl):
         '''
@@ -79,40 +57,83 @@ class webSiteTxt:
             if webxTxtObj.status_code == 200 and htmlobjet != None:
                 return htmlobjet
 
-    def buildArtListVisir(self, includeExtractBool, includeImageBool):
+
+class VisirArticles(webSiteTxt):
+    def __init__(self, newspaper, includeExtractBool, includeImageBool, SiteContent):
+        self.ArticleList = self._buildArtListVisir(newspaper,
+                                                   includeExtractBool, includeImageBool, SiteContent)
+
+    def _getArticleExtract(self, includeExtractBool, includeImageBool, htmlurl):
+
+        # Get the article extract
+        soup = None
+        soup = self._getSiteHtml(htmlurl)
+        ExtractString = None
+        ImageString = None
+        ArticeContentList = []
+        ParagraphNumber = 1
+        try:
+            if includeExtractBool:
+                for ArticleBody in soup.find_all('div', {"itemprop": "articleBody"}):
+
+                    CleanedUpContent = str(ArticleBody.p.contents)
+                    CleanedUpContent = re.sub(r'<.+?>', '', CleanedUpContent)
+                    ArticeContentList.append(CleanedUpContent)
+                    if ParagraphNumber == 1:
+                        ExtractString = str(CleanedUpContent.replace(
+                            '[', '')).replace(']', '')
+                        ExtractString = ExtractString.replace("'", "")
+            if includeImageBool:
+                for ArticleBody in soup.find_all('figure', {"class": "figure article-single__figure"}):
+                    ImageString = str(ArticleBody.img)
+                    if ParagraphNumber == 1:
+                        break
+        except TypeError as err:
+            logger.debug(err)
+        finally:
+            return ExtractString, ImageString, ArticeContentList
+
+    def _buildArtListVisir(self, newspaper, includeExtractBool, includeImageBool, siteContent):
         '''
         @param:includeExtractBool=Include first paragrahp of article true/false
         @param:includeImageBool=Include image from article true/false
         '''
-        soup = self.SiteContent
+        jobExecutionDate = UserDefinedDates.dateinseconds()
+        soup = siteContent.SiteContent
         counter = 1
         for article in soup.find_all('article', {"class": "article-item article-item--simple"}):
             for subcontent in article.h1:
                 try:
                     ExtractLink = None
                     ImageLink = None
+                    ArticleBody = []
                     if (subcontent.get('title') != None and subcontent.get('href') != None):
-                        datevalue = str(article.h1.a['href'])
-                        datevalue = datevalue[3:14]
-                        htmlurl = self.url + article.h1.a['href']
+                        #datevalue = str(article.h1.a['href'])
+                        #datevalue = datevalue[3:14]
+                        datevalue = str(jobExecutionDate)
+                        htmlurl = siteContent.url + article.h1.a['href']
                         completeATag = (str(article.h1.a).replace(
-                            'href="', 'target="_blank" href="{}'.format(self.url)))  # .replace('"', '')
+                            'href="', 'target="_blank" href="{}'.format(siteContent.url)))  # .replace('"', '')
                         DataTuple = self._getArticleExtract(
                             includeExtractBool, includeImageBool, htmlurl)
                         if DataTuple[0] != None:
                             ExtractLink = DataTuple[0]
                         if DataTuple[1] != None:
                             ImageLink = DataTuple[1].replace(
-                                'img', 'img height=auto width=auto')
-                        self.ArticleList.append(ArticleLinks(
+                                'img', 'img class="imageheight"')
+                        if DataTuple[2] != None:
+                            ArticleBody = DataTuple[2]
+                        siteContent.ArticleList.append(ArticleLinks(
                             # url=None, title=None, htmltag=None, datevalue=None
                             htmlurl,
                             article.h1.a['title'],
                             completeATag,
                             datevalue,
                             ExtractLink,
-                            ImageLink
-
+                            ImageLink,
+                            newspaper,
+                            "Easy",
+                            ArticleBody
                         ))
                         logger.debug('Article {}:{} \n at {}'.format(counter,
                                                                      article.h1.a['title'], article.h1.a['href']))
@@ -121,6 +142,7 @@ class webSiteTxt:
                         datevalue = str(article.h1.a['href'])
                         datevalue = datevalue[3:14]
                         htmlurl = self.url + article.h1.a['href']
+
                         DataTuple = self._getArticleExtract(
                             includeExtractBool, includeImageBool, htmlurl)
                         if DataTuple[0] != None:
@@ -128,6 +150,9 @@ class webSiteTxt:
                         if DataTuple[1] != None:
                             ImageLink = DataTuple[1].replace(
                                 'img', 'img height=auto width=auto')
+                        if DataTuple[2] != None:
+                            ArticleBody = DataTuple[2]
+
                         self.ArticleList.append(ArticleLinks(
                             # url=None, title=None, htmltag=None, datevalue=None
                             htmlurl,
@@ -144,7 +169,6 @@ class webSiteTxt:
                         logger.debug(
                             "Could not read all tags for {}".format(str(article.h1.a)))
                 except KeyError as err:
-                    print(err)
                     logger.debug("KeyError occurred while reading {}".format(str(article.h1.a))
                                  )
                 except TypeError as err:

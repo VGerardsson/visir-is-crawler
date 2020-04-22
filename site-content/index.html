@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script>
+      function resizeIframe(obj) {
+        obj.style.height =
+          obj.contentWindow.document.documentElement.scrollHeight + "px";
+      }
+    </script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="News from Iceland"
@@ -24,19 +31,20 @@
 
     <div class="container">
       <a href="index.html">
-        <img
-          class="imgcentersize"
-          src="Iceland_landscape.jpg"
-          alt="Sunset in Iceland"
-        />
-        <div class="centered">News from Iceland</div>
+        <div class="centered centertextheader">News from Iceland</div>
         <div class="centered"></div>
       </a>
     </div>
-    <div><br /><br /></div>
+    <div><br /></div>
 
     <p class="center">
       You can find a daily overview of news Articles from Iceland
     </p>
+
+    <iframe
+      class="layout"
+      src="http://127.0.0.1:8050/"
+      scrolling="yes"
+    ></iframe>
   </body>
 </html>
