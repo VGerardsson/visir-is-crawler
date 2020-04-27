@@ -1,0 +1,8 @@
+{
+    "url": {
+        "Visir": "https://www.visir.is",
+        "MBL": "https://www.mbl.is/frettir",
+        "Frettabladid": "https://www.frettabladid.is"
+    },
+    "outputfile": "C:\\Users\\DanielKreeft\\Documents\\Cintellic_Intern\\Schulung\\Python\\RepVisirCrawler\\visir-is-crawler\\jsonjson\\ArticleResult.json"
+}

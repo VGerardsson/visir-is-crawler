@@ -7,12 +7,14 @@ body {
   height: 100%;
   text-align: center;
   font-family: "FontAwesome";
-  font-size: 2vw;
+  font-size: 1vw;
 }
 .imageheight {
-  height: 25vh;
-  width: 35vw;
+  width: 32vw;
+  height: auto;
+  padding: 2vw;
 }
+
 table.center {
   margin-left: auto;
   margin-right: auto;
@@ -27,4 +29,42 @@ table.center {
   padding: 1vh;
   width: 100vh;
   text-align: left;
+}
+
+/* # the style arguments for the sidebar. We use position:fixed and a fixed width */
+.left_sidebar_style {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: auto;
+  padding: "1rem 1rem";
+  background-color: #d6d2d5;
+}
+
+/* # the styles for the main content position it to the right of the sidebar and
+# add some padding. */
+.left_content_style {
+  margin-left: 18rem;
+  margin-right: 2rem;
+  padding: "2rem 1rem";
+}
+
+.rightbannerimage {
+  height: 200%;
+  width: 5vw;
+}
+.right_sidebar_style {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 15rem;
+  padding: "2rem 1rem";
+}
+
+.right_content_style {
+  margin-left: 2rem;
+  margin-right: 7rem;
+  padding: "2rem 1rem";
 }

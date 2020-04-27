@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      function resizeIframe(obj) {
+        obj.style.height =
+          obj.contentWindow.document.documentElement.scrollHeight + "px";
+      }
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="News from Iceland"
+      content="Daily news articles in Icelandic. Sorted by difficulty to help language students and teachers select articles that are at their level."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="google" content="notranslate" />
+    <meta http-equiv="Content-Type" content="UTF-8; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <div class="header">
+      <img src="flag-800.png" alt="Iceland flag" width="8%" height="8%" />
+      <div class="header-right">
+        <a class="active" href="index.html">Latest articles </a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+
+    <div class="container">
+      <a href="index.html">
+        <div class="centered centertextheader">News from Iceland</div>
+        <div class="centered"></div>
+      </a>
+    </div>
+    <div><br /></div>
+
+    <p class="center">
+      You can find a daily overview of news Articles from Iceland
+    </p>
+
+    <iframe
+      class="layout"
+      src="http://127.0.0.1:8050/"
+      scrolling="yes"
+    ></iframe>
+  </body>
+</html>

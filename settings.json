@@ -1,8 +1,0 @@
-{
-    "url": {
-        "Visir": "https://www.visir.is",
-        "Frettabladid": "https://www.frettabladid.is",
-        "MBL": "https://www.mbl.is/frettir"
-    },
-    "outputfile": "json\\ArticleResult.json"
-}

@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script>
-      function resizeIframe(obj) {
-        obj.style.height =
-          obj.contentWindow.document.documentElement.scrollHeight + "px";
-      }
-    </script>
-
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="News from Iceland"
@@ -19,32 +12,195 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/cookie-bar/cookiebar-latest.min.js?tracking=1&thirdparty=1&always=1&noGeoIp=1&refreshPage=1"
+    ></script>
   </head>
   <body>
+    <div id="fb-root"></div>
+    <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v6.0"
+    ></script>
     <div class="header">
-      <img src="flag-800.png" alt="Iceland flag" width="8%" height="8%" />
-      <div class="header-right">
-        <a class="active" href="index.html">Latest articles </a>
-        <a href="about.html">About</a>
+      <div>
+        <img src="flag-800.png" alt="Iceland flag" class="imageheader" />
       </div>
+      <div class="header-center" id="flex">
+        <a class="active" href="index.html">Home</a>
+        <a href="latestnews.html">Latest articles </a>
+      </div>
+      <div
+        class="fb-like header-right"
+        data-href="https://www.facebook.com/Iceland-Frettir-104498271250181"
+        data-width="100"
+        data-layout="standard"
+        data-action="like"
+        data-size="large"
+        data-share="true"
+      ></div>
     </div>
 
     <div class="container">
       <a href="index.html">
         <div class="centered centertextheader">News from Iceland</div>
-        <div class="centered"></div>
       </a>
     </div>
-    <div><br /></div>
+    <div><br /><br /></div>
+    <div class="center maintext">
+      <p>
+        <a name="#top"></a>
+        This site collects frontpage newspaper articles from several icelandic
+        newspapers and provides readers with the difficulty level. This helps
+        language students pick a text at his or her level.
+      </p>
 
-    <p class="center">
-      You can find a daily overview of news Articles from Iceland
-    </p>
+      <p>
+        The goal of this website it to help foreign students learning Icelandic
+        find every day articles. It is also a useful learning ressource for
+        teachers that need to select interesting articles for their students.
+      </p>
+      <h3>Difficulty levels</h3>
+      <p>
+        The news is indexed on a daily to allow students to stay up-to-date with
+        articles that are at their level. The indexation is determined by the
+        Automated Readability (AR)-Index. For more information on this index
+        please check out Wikipedia
+        <a
+          target="_blank"
+          href="https://en.wikipedia.org/wiki/Automated_readability_index"
+          >here</a
+        >
+      </p>
+      <table
+        border="0"
+        cellpadding="0"
+        cellspacing="0"
+        id="sheet0"
+        class="sheet0 gridlines"
+      >
+        <col class="col0" />
+        <col class="col1" />
+        <col class="col2" />
+        <col class="col3" />
+        <col class="col4" />
+        <tbody>
+          <tr class="row0">
+            <td class="column0 style2 null"></td>
+            <td class="column1 style2 s">Actively Used Words</td>
+            <td class="column2 style2 s">Age native speakers</td>
+            <td class="column3 style2 s">AR-Index Interval</td>
+            <td class="column4 style6 s">Ability</td>
+          </tr>
+          <tr class="row1">
+            <td class="column0 style1 s">A1</td>
+            <td class="column1 style1 n">700</td>
+            <td class="column2 style1 n">3</td>
+            <td class="column3 style1 n">1</td>
+            <td class="column4 style3 s">Hulk Smash</td>
+          </tr>
+          <tr class="row2">
+            <td class="column0 style1 s">A2</td>
+            <td class="column1 style1 n">1500</td>
+            <td class="column2 style1 n">4</td>
+            <td class="column3 style1 n">1</td>
+            <td class="column4 style3 s">Communicative</td>
+          </tr>
+          <tr class="row3">
+            <td class="column0 style1 s">B1</td>
+            <td class="column1 style1 n">2500</td>
+            <td class="column2 style1 n">6</td>
+            <td class="column3 style1 n">2</td>
+            <td class="column4 style3 s">Conversational</td>
+          </tr>
+          <tr class="row4">
+            <td class="column0 style1 s">B2</td>
+            <td class="column1 style1 n">4000</td>
+            <td class="column2 style1 n">8</td>
+            <td class="column3 style1 s">3 to 4</td>
+            <td class="column4 style3 s">Basic fluency</td>
+          </tr>
+          <tr class="row5">
+            <td class="column0 style1 s">C1</td>
+            <td class="column1 style1 n">8000</td>
+            <td class="column2 style1 n">10</td>
+            <td class="column3 style1 s">5 to 6</td>
+            <td class="column4 style3 s">Advanced fluency</td>
+          </tr>
+          <tr class="row6">
+            <td class="column0 style1 s">C2</td>
+            <td class="column1 style1 s">_10000+</td>
+            <td class="column2 style1 n">12</td>
+            <td class="column3 style1 n">7</td>
+            <td class="column4 style3 null"></td>
+          </tr>
+          <tr class="row7">
+            <td class="column0 style3 s">High school</td>
+            <td class="column1 style3 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style5 s">8 to 12</td>
+            <td class="column4 style3 null"></td>
+          </tr>
+          <tr class="row8">
+            <td class="column0 style3 s">University</td>
+            <td class="column1 style3 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3 style4 s">12 to above</td>
+            <td class="column4 style3 null"></td>
+          </tr>
+        </tbody>
+      </table>
 
-    <iframe
-      class="layout"
-      src="http://127.0.0.1:8050/"
-      scrolling="yes"
-    ></iframe>
+      <p>
+        When I started learning icelandic found useful ressources to start
+        learning the language. But once I reached a certain level the available
+        ressources were very rare. That is I why I decided to build this small
+        website.I made this website especially for everyone that has been
+        learning icelandic for a while but that find it difficult to find news
+        that is at their level.
+      </p>
+      <table>
+        <tr>
+          <td><a href="https://www.visir.is/" target="_blank">Visir</a></td>
+        </tr>
+        <tr>
+          <td>
+            <a href="https://www.mbl.is/frettir/" target="_blank">MBL</a>
+          </td>
+        </tr>
+      </table>
+
+      <p>
+        You can find even more news websites at the following address: <br />
+        Iceland newspapers and news sites:
+        <a href="https://www.w3newspapers.com/iceland/" target="_blank"
+          >w3newspapers.com</a
+        >
+      </p>
+    </div>
+
+    <div style="text-align: right;"><a href="#top">Back to top</a></div>
+    <footer class="footer">
+      <p>
+        Copyright (C) 2020
+        <a target="_blank" href="https://github.com/VGerardsson">VGerardsson</a>
+      </p>
+      <p>
+        Contact:<a href="mailto:63663390+VGerardsson@users.noreply.github.com"
+          >VGerardsson@github.com</a
+        >
+      </p>
+      <p>
+        This program is free software; you can redistribute it and/or modify it
+        under the terms of the GNU General Public License
+      </p>
+      <p>
+        as published by the Free Software Foundation; either version 3 of the
+        License, or (at your option) any later version.
+      </p>
+    </footer>
   </body>
 </html>
