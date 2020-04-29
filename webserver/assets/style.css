@@ -2,30 +2,6 @@
   font-family: "Lato", sans-serif;
 } */
 
-.imageheader {
-  height: 12vh;
-  width: auto;
-}
-
-.btn {
-  border: none;
-  outline: none;
-  padding: 1vh 4vw;
-  background-color: #f1f1f1;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-/* Style the active class, and buttons on mouse-over */
-.active {
-  background-color: #666;
-  color: white;
-}
-
-.btn:hover {
-  background-color: #96b6eb;
-  color: black;
-}
 .main {
   margin-left: 160px; /* Same as the width of the sidenav */
   font-size: 28px; /* Increased text to enable scrolling */

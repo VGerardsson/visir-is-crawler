@@ -1,59 +1,102 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os
 import dash
+import flask
 import dash_core_components as dcc
 import dash_html_components as html
 from pageload import *
 from dash.dependencies import Input, Output, State
 
+
+server = flask.Flask(__name__)
+if server.config["ENV"] == "production":
+    server.config.from_object("config.ProductionConfig")
+else:
+    server.config.from_object("config.DevelopmentConfig")
+
 external_scripts = [
-    '"https://cdn.jsdelivr.net/npm/cookie-bar/cookiebar-latest.min.js?tracking=1&thirdparty=1&always=1&noGeoIp=1&refreshPage=1"']
+    'https://cdn.jsdelivr.net/npm/cookie-bar/cookiebar-latest.min.js?tracking=1&thirdparty=1&always=1&noGeoIp=1&refreshPage=1']
 
-#settingsfile = cset.configSettings(("settings.json")).configdict
-#external_stylesheets = 'http://newsfromiceland.epizy.com/style.css'
-# link fontawesome to get the chevron icons
 FA = "https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+app = dash.Dash(__name__,
+                server=server,
+                routes_pathname_prefix='/frettir/', external_scripts=external_scripts,
+                external_stylesheets=[dbc.themes.BOOTSTRAP, FA], )
 
-app = dash.Dash(__name__, external_scripts=external_scripts,
-                external_stylesheets=[dbc.themes.BOOTSTRAP, FA])
+app.index_string = '''
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+    name="News from Iceland"
+    content="Daily news articles in Icelandic. Sorted by difficulty to help language students and teachers select articles that are at their level."
+    />
+    <meta name="robots" content="index, frettir" />
+    <meta name="google" content="notranslate" />
+    <meta http-equiv="Content-Type" content="UTF-8; charset=UTF-8" />
+    <meta charset="UTF-8" />
+        <title>Iceland Fréttir</title>
+        {%favicon%}
+        {%css%}
+    </head>
+    <body>
+        {%app_entry%}
+        <footer>
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        </footer>
+    </body>
+</html>
+'''
+
 pagecontent = []
 pageloaderhandler = pageload()
 pagecontent = pageloaderhandler.pageload
+visirarticles = []
+mblarticles = []
+articlesdeleted = []
+for page in pagecontent:
+    if hasattr(page, "className"):
+        if page.className == 'visirart':
+            visirarticles.append(page)
+            articlesdeleted.append(pagecontent.index(page))
+        elif page.className == 'mblart':
+            mblarticles.append(page)
 
 
-for i in [1, 2]:
-    app.callback(
-        Output(f"submenu-{i}-collapse", "is_open"),
-        [Input(f"submenu-{i}", "n_clicks")],
-        [State(f"submenu-{i}-collapse", "is_open")],
-    )(pageload.toggle_collapse)
+tabshandler = html.Div([
+    dcc.Tabs(id='tabsnewspaper', value='visir', children=[
+        dcc.Tab(label='VISIR', value='visir'),
+        dcc.Tab(label='MBL', value='mbl'),
+    ]),
+    html.Div(id='tabs-content')
 
-    app.callback(
-        Output(f"submenu-{i}", "className"),
-        [Input(f"submenu-{i}-collapse", "is_open")],
-    )(pageload.set_navitem_class)
+], className="tabslayout")
 
-
-@app.callback(Output("page-content", "children"), [Input("url", "pathname")])
-def render_page_content(pathname):
-    if pathname in ["/", "/page-1/1"]:
-        return html.P("This is the content of page 1.1!")
-    elif pathname == "/page-1/2":
-        return html.P("This is the content of page 1.2. Yay!")
-    elif pathname == "/page-2/1":
-        return html.P("Oh cool, this is page 2.1!")
-    elif pathname == "/page-2/2":
-        return html.P("No way! This is page 2.2!")
-    # If the user tries to reach a different page, return a 404 message
-    return dbc.Jumbotron(
-        [
-            html.H1("404: Not found", className="text-danger"),
-            html.Hr(),
-            html.P(f"The pathname {pathname} was not recognised..."),
-        ]
-    )
+facebookscript = html.Script(src="https://connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v6.0",
+                             crossOrigin="anonymous", defer=True)
+finalpage = []
+finalpage.append(html.Title("Iceland Fréttir"))
+finalpage.append(facebookscript)
+finalpage.append(pagecontent[0])
+finalpage.append(pagecontent[1])
+finalpage.append(tabshandler)
 
 
-app.layout = html.Div(children=pagecontent)
+@app.callback(Output('tabs-content', 'children'),
+              [Input('tabsnewspaper', 'value')])
+def render_content(tab):
+    if tab == 'visir':
+        return visirarticles
+    elif tab == 'mbl':
+        return mblarticles
+
+
+app.layout = html.Div(finalpage)
+
+
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=False)

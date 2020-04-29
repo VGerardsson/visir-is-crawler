@@ -1,0 +1,18 @@
+.vscode/launch.json
+.vscode/settings.json
+__pycache__/configsettings.cpython-37.pyc
+__pycache__/configtwo.cpython-37.pyc
+__pycache__/crawlertxtobj.cpython-37.pyc
+__pycache__/dataobjects.cpython-37.pyc
+__pycache__/errors.cpython-37.pyc
+__pycache__/logextension.cpython-37.pyc
+is_eval/isdict.txt
+is_eval/istextstats.py
+is_eval/mittextstat.py
+is_eval/.vscode/launch.json
+is_eval/.vscode/settings.json
+is_eval/__pycache__/__init__.cpython-37.pyc
+is_eval/__pycache__/istextstats.cpython-37.pyc
+is_eval/__pycache__/mittextstat.cpython-37.pyc
+is_eval/__pycache__/textstat.cpython-37.pyc
+json/ArticleResult - Kopie - Kopie - Kopie - Kopie.json

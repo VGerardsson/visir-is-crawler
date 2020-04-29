@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import dash_bootstrap_components as dbc
 import dash_html_components as html
 import dash_core_components as dcc
@@ -34,7 +35,6 @@ class pageload():
         self._pagecontentload()
 
     def _headerlinks(self):
-
         # metatags = html.Div(
         #     [converthtml.DangerouslySetInnerHTML(
         #         '<meta name="viewport" content="width=device-width, initial-scale=1" />'
@@ -55,9 +55,10 @@ class pageload():
         # )
 
         siteheader = None
-        page1 = html.A("Latest articles", href="index.html",
+        page1 = html.A("HOME",
+                       href="http://newsfromiceland.epizy.com/index.html", className="btn")
+        page2 = html.A("FRÉTTIR", href="frettir.html",
                        className="btn active")
-        page2 = html.A("About", href="about.html", className="btn")
         subheader = html.Div([html.P(), page1, html.P(), page2])
         return subheader
 
@@ -76,115 +77,75 @@ class pageload():
         headerimg = html.Img(
             src='data:image/png;base64,{}'.format(image_base64), alt='Iceland flag', className="imageheader")
         return headerimg
-        # this function is used to toggle the is_open property of each Collapse
-
-    def toggle_collapse(self, n, is_open):
-        if n:
-            return not is_open
-        return is_open
-
-    # this function applies the "open" class to rotate the chevron
-
-    def set_navitem_class(self, is_open):
-        if is_open:
-            return "open"
-        return ""
 
     def _leftsidebarload(self):
         sidebar = None
         pageheader = None
-        submenu_1 = [
-            html.Li(
-                # use Row and Col components to position the chevrons
-                dbc.Row(
-                    [
-                        dbc.Col("Menu 1"),
-                        dbc.Col(
-                            html.I(className="fas fa-chevron-right mr-3"), width="auto"
-                        ),
-                    ],
-                    className="my-1",
-                ),
-                id="submenu-1",
-            ),
-            # we use the Collapse component to hide and reveal the navigation links
-            dbc.Collapse(
-                [
-                    dbc.NavLink("Page 1.1", href="/page-1/1"),
-                    dbc.NavLink("Page 1.2", href="/page-1/2"),
-                ],
-                id="submenu-1-collapse",
 
-            ),
-        ]
-
-        submenu_2 = [
-            html.Li(
-                dbc.Row(
-                    [
-                        dbc.Col("Menu 2"),
-                        dbc.Col(
-                            html.I(className="fas fa-chevron-right mr-3"), width="auto"
-                        ),
-                    ],
-                    className="my-1",
-                ),
-                id="submenu-2",
-            ),
-            dbc.Collapse(
-                [
-                    dbc.NavLink("Page 2.1", href="/page-2/1"),
-                    dbc.NavLink("Page 2.2", href="/page-2/2"),
-                ],
-                id="submenu-2-collapse",
-            ),
-        ]
         imageheader = self._imageheader()
         headerlinks = self._headerlinks()
-        #containerheader = self._containerheader()
+        facebookdiv = converthtml.DangerouslySetInnerHTML(
+            '<div class="fb-like header-right" data-href="https://www.facebook.com/Iceland-Frettir-104498271250181" data-width="100" data-layout="standard" data-action="like" data-size="large" data-share="true"></div>')
         sidebar = html.Div(
             [
-                #html.H2("Sidebar", className="display-4"),
-                # containerheader,
                 imageheader,
+                facebookdiv,
                 headerlinks,
-                html.Hr(),
-                html.P(
-                    "A sidebar with collapsible navigation links", className="lead"
-                ),
-                dbc.Nav(submenu_1 + submenu_2, vertical=True)
+                html.Hr()
             ],             className="left_sidebar_style",
             id="leftsidebar",
         )
 
         content = html.Div(id="page-content", className="left_content_style")
-        sidebar = html.Div([dcc.Location(id="url"), sidebar, content])
+        sidebar = html.Div(
+            [dcc.Location(id="url"), sidebar, content])
         return sidebar
 
     def _rightsidebarload(self):
         sidebar = None
 
-        imagebanner = 'iceland_Banner2.jpg'
+        imagebanner = 'rightbanner.jpg'
         test_base64 = base64.b64encode(
             open(imagebanner, 'rb').read()).decode('ascii')
-
-        # app.layout = html.Div([
-        #     html.Img(src='data:image/png;base64,{}'.format(test_base64)),
-        # ])
-        # imageurl = "<img src=\"iceland_Banner.jpg\" alt=\"Iceland\" class=\"rightbannerimage\">"
 
         sidebar = html.Div(
             [html.Img(src='data:image/png;base64,{}'.format(test_base64))
              ], className="right_sidebar_style rightbannerimage", id="rightsidebar")
+
         return sidebar
 
     def _errorlogging(self, msg):
         logger = UserdefinedLogging(__name__, 'pageload.log', True)
         logger.error(msg)
 
-    def _articlemenubar(self):
-        pass
-        # return articlemenubar
+    def _articlelistload(self):
+        articlelist = []
+        for article in json.loads(self.ArticleResultJSON):
+
+            column1 = dbc.Col(
+                [
+                    html.H5(converthtml.DangerouslySetInnerHTML(
+                        article["htmltag"])),
+                    html.B(str(str(article["difficultylevel"]) + "-" +
+                               article["newspaper"] + ":")),
+                    html.Div(article["ArticleExtract"],
+                             className="tabscontent articletext")
+                ],  width=3, sm=3, md=3, lg=3, align="center")
+
+            column2 = dbc.Col(
+                converthtml.DangerouslySetInnerHTML(
+                    article["ImageLink"]), width=3, sm=3, md=3, lg=3, align="end")
+            row = None
+            if article["newspaper"] == 'Visir':
+                row = dbc.Row([column1, column2],
+                              className="visirart", justify="center")
+            if article["newspaper"] == 'MBL':
+                row = dbc.Row([column1, column2],
+                              className="mblart", justify="center")
+
+            articlelist.append(row)
+
+        return articlelist
 
     def _pagecontentload(self):
         pageload = []
@@ -193,59 +154,7 @@ class pageload():
         pageload.append(leftsidebar)
         rightsidebar = self._rightsidebarload()
         pageload.append(rightsidebar)
-        articlemenubar = dbc.Container(html.Tr([
-
-            html.Td(dcc.DatePickerSingle(
-                id='date-picker-single',
-                date=date.today(),
-                display_format='Do MMM-YY',
-                month_format='Do MMM-YY',
-                placeholder='Do MMM-YY'
-            )),
-
-            html.Td([
-                dcc.Checklist(
-                    options=[
-                        {'label': 'Visir', 'value': 'visir'},
-                        {'label': 'Frettabladid', 'value': 'frettabladid'},
-                        {'label': 'MBL', 'value': 'mbl'}
-                    ],
-                    value=['visir', 'frettabladid', 'mbl'],
-                    labelStyle={'display': 'inline-block'}
-                ),
-                dcc.Checklist(
-                    options=[
-                        {'label': 'Beginner', 'value': 'easy-is'},
-                        {'label': 'Intermed', 'value': 'interm-is'},
-                        {'label': 'Advanced', 'value': 'advan-is'}
-                    ],
-                    value=['easy-is', 'interm-is', "advan-is"],
-                    labelStyle={'display': 'inline-block'}
-                )
-
-            ])
-
-        ])
-        )
-
-        for article in json.loads(self.ArticleResultJSON):
-
-            column1 = dbc.Col(
-                [
-                    html.H4(converthtml.DangerouslySetInnerHTML(
-                        article["htmltag"])),
-                    html.B(str(str(article["difficultylevel"]) + "-" +
-                               article["newspaper"] + ":")),
-                    article["ArticleExtract"]
-                ], width=3, sm=3, md=3, lg=3, align="center")
-
-            column2 = dbc.Col(
-                converthtml.DangerouslySetInnerHTML(
-                    article["ImageLink"]), width=3, sm=3, md=3, lg=3, align="end")
-
-            row = dbc.Row([column1, column2],
-                          justify="center")
-            pageload.append(row)
-            pageload.append(html.Br())
-
-            self.pageload = pageload
+        articletable = []
+        articletable = self._articlelistload()
+        pageload = pageload+articletable
+        self.pageload = pageload

@@ -9,8 +9,6 @@ from errors import *
 from dataobjects import *
 from logextension import *
 from is_eval import istextstats
-
-
 logger = UserdefinedLogging(__name__, 'crawlertxtobj.log', True)
 
 
@@ -132,6 +130,7 @@ class VisirArticles(webSiteTxt):
                             try:
                                 ArticleBody = ' '.join(
                                     map(str, ArticleBodyHandler))
+
                                 difficultyHandler = istextstats.istextstats()
                                 difficultylevel = difficultyHandler.automated_readability_index(
                                     ArticleBody)
@@ -149,8 +148,8 @@ class VisirArticles(webSiteTxt):
                             ExtractLink,
                             ImageLink,
                             newspaper,
-                            difficultylevel,
-                            ArticleBodyHandler
+                            difficultylevel
+                            # ArticleBodyHandler
                         ))
                         # logger.debug('Article {}:{} \n at {}'.format(counter,
                         #                                             article.h1.a['title'], article.h1.a['href']))
@@ -191,8 +190,8 @@ class VisirArticles(webSiteTxt):
                             ExtractLink,
                             ImageLink,
                             newspaper,
-                            difficultylevel,
-                            ArticleBodyHandler
+                            difficultylevel
+                            # ArticleBodyHandler
                         ))
                     #    logger.debug('Article {}:{} \n at {}'.format(counter,
                      #                                                str(str(article.h1.a.contents).replace('[', '')).replace(']', ''), article.h1.a['href']))
@@ -267,10 +266,11 @@ class mblarticles(webSiteTxt):
                     datevalue = str(jobExecutionDate)
                     ImageLink = str(article.find("noscript").contents[1]).replace(
                         '<img', '<img class="imageheight"')
-                    completeATag = str(article.find('a')).replace(
-                        'href="', 'target="_blank" href="{}'.format(siteContent.url))
                     atag = article.find('a').attrs['href']
-                    htmlurl = siteContent.url.replace('/frettir', "") + atag
+                    htmlurl = siteContent.url + atag
+                    completeATag = '<a target="_blank" href="' + \
+                        htmlurl + '">' + ArticleTitle + '</a>'
+
                     DataTuple = self._getArticleExtract(
                         includeExtractBool, htmlurl)
                     if DataTuple[0] != None:
@@ -297,8 +297,8 @@ class mblarticles(webSiteTxt):
                         ExtractLink,
                         ImageLink,
                         newspaper,
-                        difficultylevel,
-                        ArticleBodyHandler
+                        difficultylevel
+                        # ArticleBodyHandler
                     ))
                     counter = counter + 1
 

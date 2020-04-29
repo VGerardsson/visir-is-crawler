@@ -2,8 +2,9 @@ import json.encoder
 from logextension import *
 from crawlertxtobj import *
 from configsettings import *
+from dataobjects import ArticleLinks
 settingsfile = configSettings("settings.json").configjson
-#from configtwo import *
+# from configtwo import *
 
 try:
     logger = UserdefinedLogging(__name__, 'main.log', False)
@@ -13,34 +14,36 @@ except TypeError as err:
 
 
 urldict = dict(settingsfile["url"])
-
+mblArticlesResultSet = []
+visirArticlesResultSet = []
 for key, value in urldict.items():
-    if key == "MBL":
-        url = value
-        txtprinter = webSiteTxt(url)
-        articleList = []
-        IncludeExtractBool = True
-        IncludeImageBool = False
-        articlesHandler = mblarticles(key,
-                                      IncludeExtractBool, IncludeImageBool, txtprinter)
-        articlesResultSet = articlesHandler.ArticleList
+    # if key == "MBL":
+    #     url = value
+    #     txtprinter = webSiteTxt(url)
+    #     articleList = []
+    #     IncludeExtractBool = True
+    #     IncludeImageBool = False
+    #     articlesHandler = mblarticles(key,
+    #                                   IncludeExtractBool, IncludeImageBool, txtprinter)
+    #     mblArticlesResultSet = articlesHandler.ArticleList
 
-    #url = "https://www.visir.is"
-"""     if key == "Visir":
+    if key == "Visir":
         url = value
         txtprinter = webSiteTxt(url)
         articleList = []
         IncludeExtractBool = True
         IncludeImageBool = True
-
         articlesHandler = VisirArticles(key,
                                         IncludeExtractBool, IncludeImageBool, txtprinter)
-        articlesResultSet = articlesHandler.ArticleList """
+        visirArticlesResultSet = articlesHandler.ArticleList
 
+articlesResultSet = visirArticlesResultSet+mblArticlesResultSet
+sorted_ArticleList = sorted(
+    articlesResultSet, key=lambda ArticleLinks: [ArticleLinks.difficultylevel, ArticleLinks.datevalue])
 
 print("Ok")
 ArticleResultJSON = open(settingsfile["outputfile"], "w+")
-#ArticleResultJSON = open("ArticleResult.json" , "w+")
+# ArticleResultJSON = open("ArticleResult.json" , "w+")
 
 ArticleResultJSON.write('[')
 Counter = 1

@@ -9,19 +9,23 @@ body {
   font-family: "FontAwesome";
   font-size: 1vw;
 }
-.imageheight {
-  width: 32vw;
-  height: auto;
-  padding: 2vw;
+
+.visirart {
+  text-align: left;
+}
+.mblart {
+  text-align: left;
+}
+.tabslayout {
+  padding-top: 10px;
+  padding-left: 2px;
+  padding-right: 3px;
 }
 
-table.center {
-  margin-left: auto;
-  margin-right: auto;
-  padding: 1vh;
-}
-.row {
-  display: flex;
+@media screen and (min-width: 601px) {
+  articletext {
+    font-size: 1vw;
+  }
 }
 
 /* Create two equal columns that sit next to each other */
@@ -31,13 +35,22 @@ table.center {
   text-align: left;
 }
 
+.imageheight {
+  width: 31vw;
+  height: auto;
+  padding: 2vw;
+}
+.imageheader {
+  height: 8vh;
+  width: auto;
+}
 /* # the style arguments for the sidebar. We use position:fixed and a fixed width */
 .left_sidebar_style {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
-  width: auto;
+  width: 20vw;
   padding: "1rem 1rem";
   background-color: #d6d2d5;
 }
@@ -45,13 +58,13 @@ table.center {
 /* # the styles for the main content position it to the right of the sidebar and
 # add some padding. */
 .left_content_style {
-  margin-left: 18rem;
+  margin-left: 17rem;
   margin-right: 2rem;
   padding: "2rem 1rem";
 }
 
 .rightbannerimage {
-  height: 200%;
+  height: 100%;
   width: 5vw;
 }
 .right_sidebar_style {
@@ -67,4 +80,25 @@ table.center {
   margin-left: 2rem;
   margin-right: 7rem;
   padding: "2rem 1rem";
+}
+
+.btn {
+  border: none;
+  outline: none;
+  padding: 1vh 4vw;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  font-size: 20px;
+  width: 100%;
+}
+
+/* Style the active class, and buttons on mouse-over */
+.active {
+  background-color: #666;
+  color: white;
+}
+
+.btn:hover {
+  background-color: #96b6eb;
+  color: black;
 }
